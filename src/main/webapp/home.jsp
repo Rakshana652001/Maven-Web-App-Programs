@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html>
+<html lang="xml">
 <head>
 <meta charset="ISO-8859-1">
 <title>Home</title>
@@ -10,7 +10,7 @@
 <form action="registration.jsp" method="post">
 <input type="submit" value="Register">
 </form>
-<form action="/listOfUsers" method="post">
+<form action="/listOfUsers" method="get">
 <input type="submit" value="List Of Users">
 </form>
 </body>

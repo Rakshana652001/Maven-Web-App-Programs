@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.chainsys.MavenWebApp.dao.UserDAOImplementation;
+import com.chainsys.MavenWebApp.dao.UserDAO;
 import com.chainsys.MavenWebApp.model.User;
 
 @Controller
 public class MyController
 {
 	@Autowired
-	UserDAOImplementation daoImplementation;
+	UserDAO userDAO;
 	
 	@RequestMapping("/home")
 	public String home()
@@ -40,15 +40,15 @@ public class MyController
 		user.setPhoneNumber(phoneNumber);
 		user.setEmailId(emailId);
 		user.setPassword(password);
-		daoImplementation.saveDetails(user);
+		userDAO.saveDetails(user);
 		
 		return "success.jsp";
 	}
 	
-	@PostMapping("/listOfUsers")
+	@GetMapping("/listOfUsers")
 	public String getAllUsers(Model model)
 	{
-		List<User> users = daoImplementation.retrive();
+		List<User> users = userDAO.retrive();
 		model.addAttribute("list", users);
 		return "userTable.jsp";
 	}
@@ -63,25 +63,23 @@ public class MyController
 		user.setPassword(password);
 		user.setName(name);
 		
-		daoImplementation.update(user);
+		userDAO.update(user);
 		
-		List<User> users = daoImplementation.retrive();
+		List<User> users = userDAO.retrive();
 		model.addAttribute("list", users);
 		
 		return "userTable.jsp";
 	}
 	
-	
 	@GetMapping("/delete")
 	public String delete(@RequestParam ("name") String name, Model model)
 	{
 		User user = new User();
-		
 		user.setName(name);
 		
-		daoImplementation.delete(user);
+		userDAO.delete(user);
 		
-		List<User> users = daoImplementation.retrive();
+		List<User> users = userDAO.retrive();
 		model.addAttribute("list", users);
 		
 		return "userTable.jsp";
@@ -90,15 +88,9 @@ public class MyController
 	@GetMapping("/search")
 	public String search(@RequestParam ("name") String name, Model model)
 	{
-		User user = new User();
 		
-		user.setName(name);
-		
-		daoImplementation.search(name);
-		
-		List<User> users = daoImplementation.retrive();
-		model.addAttribute("list", users);
-		
-		return "userTable.jsp";
-	}
+		List<User> list = userDAO.search(name);
+		model.addAttribute("list", list);
+		return "searchedList.jsp";
+	}	
 }

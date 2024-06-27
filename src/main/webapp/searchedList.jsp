@@ -8,14 +8,10 @@
 <html lang="xml">
 <head>
 <meta charset="ISO-8859-1">
-<title>User List</title>
+<title>Searched List</title>
 </head>
 <body>
-<h3>User List</h3>
-	<form action= "/search" method= "get">
-	<input type= "search" placeholder="Search" name= "name" id="name">
-	<button>Search</button>
-	</form><br>
+<h3>Searched Details</h3>
 <table border="1">
 <thead>
 	<tr>

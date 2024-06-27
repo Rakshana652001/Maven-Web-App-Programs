@@ -14,7 +14,6 @@ public class UserDAOImplementation implements UserDAO
 {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
-	
 	UserMapper mapper;
 
 	@Override
@@ -28,7 +27,7 @@ public class UserDAOImplementation implements UserDAO
 	@Override
 	public List<User> retrive() 
 	{
-		String retrive = "select name, email_id, phone_number from demo";
+		String retrive = "select name, email_id, phone_number from demo where deleted_user=0";
 		List<User> list = jdbcTemplate.query(retrive, new UserMapper());
 		return list;
 	}
@@ -42,24 +41,20 @@ public class UserDAOImplementation implements UserDAO
 
 	public void delete(User user) 
 	{
-		String delete = "delete from demo where name=?";
+		String delete = "update demo set deleted_user=1 where name=?";
 		Object[] name = {user.getName()};
 		jdbcTemplate.update(delete, name);
-		
 	}
 
-	public String search(String name) 
+	public List<User> search(String name) 
 	{
-		String retrive = "select name, email_id, phone_number from demo where name=?";
-		String getList = null;
-		try
-		{
-			getList = jdbcTemplate.queryForObject(retrive, String.class, name);
-		}
-		catch(Exception e)
-		{
-			System.out.println(e);
-		}
-		return getList;
+		String retrive = String.format 
+				(
+		            "SELECT name, email_id, phone_number FROM demo " +
+		            "WHERE (name LIKE '%%%s%%' OR email_id LIKE '%%%s%%' OR phone_number LIKE '%%%s%%') " +
+		            "AND deleted_user=0",
+		            name, name,name
+		        );
+		        return jdbcTemplate.query(retrive, new UserMapper());		
 	}
 }
